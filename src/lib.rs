@@ -16,7 +16,7 @@ pub fn listen_tcp(addr: &str, text: Arc<Mutex<String>>) {
         let text = text.clone();
         let i = i;
         thread::spawn(move || {
-            let _ = stream.write(b"Hello World\n");
+            let _ = stream.write(b"Welcome to netlion\n");
             let buf = &mut [0; 128];
             while let Ok(n) = stream.read(buf) {
                 if n == 0 {

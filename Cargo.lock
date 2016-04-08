@@ -1,5 +1,5 @@
 [root]
-name = "net-tool"
+name = "netlion"
 version = "0.1.0"
 dependencies = [
  "conrod 0.31.3 (registry+https://github.com/rust-lang/crates.io-index)",

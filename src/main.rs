@@ -1,7 +1,7 @@
 #[macro_use] extern crate conrod;
 extern crate find_folder;
 extern crate piston_window;
-extern crate net_tool;
+extern crate netlion;
 
 use std::thread;
 use std::sync::{Arc, Mutex};
@@ -9,11 +9,11 @@ use std::sync::{Arc, Mutex};
 use conrod::{Labelable, Positionable, Sizeable, Theme, Ui, Widget, Canvas, Text, TextBox, DropDownList, Button};
 use conrod::color::{Color, Colorable};
 use piston_window::{EventLoop, Glyphs, PistonWindow, UpdateEvent, WindowSettings};
-use net_tool::*;
+use netlion::*;
 
 fn main() {
     // Construct the window.
-    let window: PistonWindow = WindowSettings::new("Click me!", [800, 600])
+    let window: PistonWindow = WindowSettings::new("netlion", [800, 600])
         .exit_on_esc(true).build().unwrap();
 
     // construct our `Ui`.
@@ -30,7 +30,7 @@ fn main() {
     let mut net_mode = String::from("tcp");
     let options = &mut vec![String::from("udp"), String::from("tcp")];
     let mut sel_option = Some(1);
-    let text = Arc::new(Mutex::new(String::from("Hello world")));
+    let text = Arc::new(Mutex::new(String::from("Welcome to netlion:\n")));
 
     // Poll events from the window.
     for event in window.ups(60) {
