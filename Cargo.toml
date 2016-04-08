@@ -1,0 +1,9 @@
+[package]
+name = "net-tool"
+version = "0.1.0"
+authors = ["T. Jameson Little <t.jameson.little@gmail.com>"]
+
+[dependencies]
+piston_window = "0.33.0"
+conrod = "0.31.3"
+find_folder = "0.3.0"
