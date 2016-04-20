@@ -78,8 +78,7 @@ fn main() {
                 .set(START, ui);
 
             Text::new(text.lock().unwrap().as_str())
-                // .below(TEXT_BOX)
-                .top_left_of(TEXT_BOX)
+                .down_from(TEXT_BOX, 10.0)
                 .color(Color::Rgba(0.5, 0.5, 0.5, 1.0))
                 .align_text_left()
                 .line_spacing(10.0)
