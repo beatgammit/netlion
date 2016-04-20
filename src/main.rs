@@ -6,14 +6,19 @@ extern crate netlion;
 use std::thread;
 use std::sync::{Arc, Mutex};
 
-use conrod::{Labelable, Positionable, Sizeable, Theme, Ui, Widget, Canvas, Text, TextBox, DropDownList, Button};
+use conrod::{Labelable, Positionable, Sizeable, Theme, Widget, Canvas, Text, TextBox, DropDownList, Button};
 use conrod::color::{Color, Colorable};
 use piston_window::{EventLoop, Glyphs, PistonWindow, UpdateEvent, WindowSettings};
 use netlion::*;
 
+/// Conrod is backend agnostic. Here, we define the `piston_window` backend to use for our `Ui`.
+type Backend = (<piston_window::G2d<'static> as conrod::Graphics>::Texture, Glyphs);
+type Ui = conrod::Ui<Backend>;
+type UiCell<'a> = conrod::UiCell<'a, Backend>;
+
 fn main() {
     // Construct the window.
-    let window: PistonWindow = WindowSettings::new("netlion", [800, 600])
+    let mut window: PistonWindow = WindowSettings::new("netlion", [800, 600])
         .exit_on_esc(true).build().unwrap();
 
     // construct our `Ui`.
@@ -22,7 +27,7 @@ fn main() {
             .for_folder("conrod").unwrap();
         let font_path = assets.join("assets/fonts/NotoSans/NotoSans-Regular.ttf");
         let theme = Theme::default();
-        let glyph_cache = Glyphs::new(&font_path, window.factory.borrow().clone());
+        let glyph_cache = Glyphs::new(&font_path, window.factory.clone());
         Ui::new(glyph_cache.unwrap(), theme)
     };
 
@@ -32,10 +37,13 @@ fn main() {
     let mut sel_option = Some(1);
     let text = Arc::new(Mutex::new(String::from("Welcome to netlion:\n")));
 
+    window.set_ups(60);
+
     // Poll events from the window.
-    for event in window.ups(60) {
+    while let Some(event) = window.next() {
         ui.handle_event(&event);
-        event.update(|_| ui.set_widgets(|ui| {
+        event.update(|_| ui.set_widgets(|mut ui| {
+            let ui = &mut ui;
 
             // Generate the ID for the Button COUNTER.
             widget_ids!(CANVAS, TEXT_BOX, START, PROTO_LIST, RESULT);
@@ -77,7 +85,8 @@ fn main() {
                 .line_spacing(10.0)
                 .set(RESULT, ui);
         }));
-        event.draw_2d(|c, g| ui.draw_if_changed(c, g));
+
+        window.draw_2d(&event, |c, g| ui.draw_if_changed(c, g));
     }
 }
 
