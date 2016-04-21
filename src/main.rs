@@ -73,7 +73,7 @@ fn main() {
                 .label(&String::from("Start"))
                 .react(|| {
                     let text = text.clone();
-                    start(port, text);
+                    start(net_mode.as_str(), port, text);
                 })
                 .set(START, ui);
 
@@ -89,10 +89,15 @@ fn main() {
     }
 }
 
-fn start(port: &String, text: Arc<Mutex<String>>) {
-    let addr = String::from("0.0.0.0:") + port;
+fn start(mode: &str, port: &String, text: Arc<Mutex<String>>) {
     let text = text.clone();
+    let host = "127.0.0.1";
+    let port = port.parse::<u16>().unwrap();
 
-    println!("Starting listener on port {}", port);
-    thread::spawn(move || listen_tcp(addr.as_str(), text));
+    println!("Starting {} listener: {}:{}", mode, host, port);
+    match mode {
+        "tcp" => {thread::spawn(move || listen_tcp(host, port, text));},
+        "udp" => {thread::spawn(move || listen_udp(host, port, text));},
+        _ => println!("Listener type not recognized: {}", mode),
+    };
 }
