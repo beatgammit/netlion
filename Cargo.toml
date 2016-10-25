@@ -1,9 +1,9 @@
 [package]
 name = "netlion"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["T. Jameson Little <t.jameson.little@gmail.com>"]
 
 [dependencies]
-piston_window = "0.43.0"
-conrod = "0.34.0"
+piston_window = "0.52.0"
+conrod = "0.44.1"
 find_folder = "0.3.0"
